@@ -45,6 +45,32 @@ export const addUser = expressAsyncHandler(async (req, res, next) => {
 	}
 });
 
+//login User
+export const loginUser = expressAsyncHandler(async (req, res) => {
+	//destructuring the body
+	const { email, password } = req.body;
+
+	//checking if the user filled all the fields
+	if (!email || !password) {
+		return res.json({ message: 'Fill all the fields' });
+	}
+
+	//finding the user through email
+	const user = await User.findOne({ email });
+
+	//checking if the entered parameters are correct
+	if (user && (await bcrypt.compare(password, user.password))) {
+		res.status(200).json({
+			_id: user.id,
+			username: user.username,
+			email: user.email,
+			token: generateToken(user._id),
+		});
+	} else {
+		res.status(400).json({ message: 'Invalid Data' });
+	}
+});
+
 //Token Generator
 const generateToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '15d' });
