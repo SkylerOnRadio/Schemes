@@ -1,5 +1,15 @@
 import express from 'express';
+import { connectDB } from './config/connectDB.js';
+import users from './routes/userRoutes.js';
+const PORT = process.env.PORT;
+
+connectDB();
 
 const app = express();
 
-app.listen(5000, () => console.log('Server started on http://localhost:5000'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+app.use('/api/users', users);
+
+app.listen(PORT, () => console.log('Server started on http://localhost:5000'));
