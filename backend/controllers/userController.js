@@ -71,6 +71,11 @@ export const loginUser = expressAsyncHandler(async (req, res) => {
 	}
 });
 
+//show the user details
+export const showUser = expressAsyncHandler(async (req, res) => {
+	res.status(200).json(req.user);
+});
+
 //Token Generator
 const generateToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '15d' });
