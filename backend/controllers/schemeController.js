@@ -87,16 +87,19 @@ export const updateScheme = expressAsyncHandler(async (req, res, next) => {
 
 	//check if the the scheme exists
 	if (scheme) {
-		await Scheme.findByIdAndUpdate(id, {
-			title,
-			shortDescription,
-			benefits,
-			objectives,
-			eligibility,
-			agency,
-			longDescription,
-		});
-		const updatedScheme = await Scheme.findById(id);
+		const updatedScheme = await Scheme.findByIdAndUpdate(
+			id,
+			{
+				title,
+				shortDescription,
+				benefits,
+				objectives,
+				eligibility,
+				agency,
+				longDescription,
+			},
+			{ new: true }
+		);
 		res.status(200).json(updatedScheme);
 	}
 	return next(new Error("Scheme doesn't exist"));
