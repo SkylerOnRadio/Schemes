@@ -33,15 +33,24 @@ export const addUser = expressAsyncHandler(async (req, res, next) => {
 		password: hashedPassword,
 	});
 	if (user) {
+		//check if the user has company email
+		if (email.endsWith('@gov.in')) {
+			await User.findOneAndUpdate(
+				{ email: email },
+				{ $set: { employee: true } },
+				{ new: true }
+			);
+		}
+
 		res.status(200).json({
 			_id: user._id,
 			username: user.username,
 			email: user.email,
-			token: generateToken(user._id),
+			token: generateToken(user._id, user.employee),
 		});
 	} else {
 		res.status(400);
-		res.send('Invalid User Data');
+		return next(new Error('Invalid data entered'));
 	}
 });
 
@@ -64,10 +73,11 @@ export const loginUser = expressAsyncHandler(async (req, res) => {
 			_id: user.id,
 			username: user.username,
 			email: user.email,
-			token: generateToken(user._id),
+			token: generateToken(user._id, user.employee),
 		});
 	} else {
-		res.status(400).json({ message: 'Invalid Data' });
+		res.status(400);
+		return next(new Error('Invalid data entered'));
 	}
 });
 
@@ -76,7 +86,14 @@ export const showUser = expressAsyncHandler(async (req, res) => {
 	res.status(200).json(req.user);
 });
 
+//show the user details
+export const showAdmin = expressAsyncHandler(async (req, res) => {
+	res.status(200).json(req.user);
+});
+
 //Token Generator
-const generateToken = (id) => {
-	return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '15d' });
+const generateToken = (id, isEmployee) => {
+	return jwt.sign({ id, isEmployee }, process.env.JWT_SECRET, {
+		expiresIn: '15d',
+	});
 };

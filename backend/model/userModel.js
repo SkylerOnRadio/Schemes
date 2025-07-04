@@ -9,6 +9,7 @@ const userSchema = mongoose.Schema(
 			unique: true,
 		},
 		password: { type: String, required: [true, 'Please add password.'] },
+		employee: { type: Boolean, required: false, default: false },
 	},
 	{ timestamps: true }
 );

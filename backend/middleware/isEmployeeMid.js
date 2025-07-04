@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import expressAsyncHandler from 'express-async-handler';
 import { User } from '../model/userModel.js';
 
-export const protect = expressAsyncHandler(async (req, res, next) => {
+export const isAdmin = expressAsyncHandler(async (req, res, next) => {
 	//declaring the token variable
 	let token;
 
@@ -19,8 +19,14 @@ export const protect = expressAsyncHandler(async (req, res, next) => {
 				//verify the token
 				const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-				//Get user from the token
-				req.user = await User.findById(decoded.id).select('-password');
+				//check if user is admin
+				if (decoded.employee) {
+					//Get user from the token
+					req.user = await User.findById(decoded.id).select('-password');
+				} else {
+					console.log('Not admin');
+					return res.status(403).json({ message: 'Not Authorised' });
+				}
 				next();
 			}
 		} catch (error) {
@@ -31,6 +37,6 @@ export const protect = expressAsyncHandler(async (req, res, next) => {
 
 	if (!token) {
 		res.status(401);
-		return next('No token provided');
+		return next(new Error('No token provided'));
 	}
 });
