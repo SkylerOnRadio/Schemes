@@ -2,6 +2,7 @@ import express from 'express';
 import { errorHandler } from './middleware/errorHandler.js';
 import { connectDB } from './config/connectDB.js';
 import users from './routes/userRoutes.js';
+import schemes from './routes/schemeRoutes.js';
 const PORT = process.env.PORT;
 
 connectDB();
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/users', users);
+app.use('/api/schemes', schemes);
 
 app.use(errorHandler);
 

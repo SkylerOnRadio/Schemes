@@ -13,7 +13,7 @@ export const addUser = expressAsyncHandler(async (req, res, next) => {
 	//Check if user filled all fields
 	if (!username || !email || !password) {
 		res.status(400);
-		return res.send('Please fill all fields');
+		return next(new Error('Please fill all fields.'));
 	}
 
 	//check if the user already exists

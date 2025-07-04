@@ -17,7 +17,7 @@ const schemeSchema = mongoose.Schema(
 			required: [true, 'Please set the benefits'],
 			maxlength: 250,
 		},
-		objective: {
+		objectives: {
 			type: String,
 			required: [true, 'Please set the objectives'],
 			maxlength: 250,
