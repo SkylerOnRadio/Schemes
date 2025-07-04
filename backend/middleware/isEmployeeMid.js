@@ -19,13 +19,15 @@ export const isAdmin = expressAsyncHandler(async (req, res, next) => {
 				//verify the token
 				const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+				console.log(decoded.isEmployee);
 				//check if user is admin
-				if (decoded.employee) {
+				if (decoded.isEmployee) {
 					//Get user from the token
 					req.user = await User.findById(decoded.id).select('-password');
+					return next();
 				} else {
-					console.log('Not admin');
-					return res.status(403).json({ message: 'Not Authorised' });
+					res.status(403);
+					return next(new Error('Not Admin'));
 				}
 				next();
 			}
