@@ -35,7 +35,7 @@ export const addUser = expressAsyncHandler(async (req, res, next) => {
 	if (user) {
 		//check if the user has company email
 		if (email.endsWith('@gov.in')) {
-			await User.findOneAndUpdate(
+			const updatedUser = await User.findOneAndUpdate(
 				{ email: email },
 				{ $set: { employee: true } },
 				{ new: true }
@@ -46,7 +46,7 @@ export const addUser = expressAsyncHandler(async (req, res, next) => {
 			_id: user._id,
 			username: user.username,
 			email: user.email,
-			token: generateToken(user._id, user.employee),
+			token: generateToken(updatedUser._id, user.employee),
 		});
 	} else {
 		res.status(400);
