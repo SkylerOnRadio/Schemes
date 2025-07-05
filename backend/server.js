@@ -4,6 +4,7 @@ import { connectDB } from './config/connectDB.js';
 import users from './routes/userRoutes.js';
 import schemes from './routes/schemeRoutes.js';
 import details from './routes/userDetailsRoutes.js';
+import eligibility from './routes/schemeEligibilityRoutes.js';
 const PORT = process.env.PORT;
 
 connectDB();
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api/users', users);
 app.use('/api/schemes', schemes);
 app.use('/api/user/', details);
+app.use('/api/eligibility/', eligibility);
 
 app.use(errorHandler);
 
