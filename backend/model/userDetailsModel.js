@@ -5,6 +5,7 @@ const userDetailSchema = mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		required: true,
 		ref: 'User',
+		unique: true,
 	},
 	gender: {
 		type: String,

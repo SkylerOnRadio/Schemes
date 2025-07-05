@@ -27,6 +27,11 @@ export const addUserDetails = async (req, res, next) => {
 		student,
 	} = req.body;
 
+	if (await userDetail.find({ user: req.user._id })) {
+		res.status(400);
+		return next(new Error('Details already exists'));
+	}
+
 	//checks if all fields are filled
 	if (
 		!gender ||
