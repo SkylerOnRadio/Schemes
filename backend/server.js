@@ -1,5 +1,5 @@
 import express from 'express';
-import { errorHandler } from './middleware/errorHandler.js';
+import { errorHandler, notFound } from './middleware/errorHandler.js';
 import { connectDB } from './config/connectDB.js';
 import users from './routes/userRoutes.js';
 import schemes from './routes/schemeRoutes.js';
@@ -19,6 +19,7 @@ app.use('/api/schemes', schemes);
 app.use('/api/user/', details);
 app.use('/api/eligibility/', eligibility);
 
+app.use(notFound);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
