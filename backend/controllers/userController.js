@@ -1,7 +1,8 @@
 import expressAsyncHandler from 'express-async-handler';
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { User } from '../model/userModel.js';
+import generateToken from '../utils/generateToken.js';
+import e from 'express';
 
 //adds user to the database
 // POST  api/users/register
@@ -20,7 +21,7 @@ export const addUser = expressAsyncHandler(async (req, res, next) => {
 	const userExists = await User.findOne({ email });
 	if (userExists) {
 		res.status(400);
-		return console.log('User already exists');
+		return next(new Error('User already exists'));
 	}
 
 	//Hashing the password
@@ -35,18 +36,15 @@ export const addUser = expressAsyncHandler(async (req, res, next) => {
 	if (user) {
 		//check if the user has company email
 		if (email.endsWith('@gov.in')) {
-			const updatedUser = await User.findOneAndUpdate(
-				{ email: email },
-				{ $set: { employee: true } },
-				{ new: true }
-			);
+			user.employee = true;
+			await user.save();
 		}
 
-		res.status(200).json({
+		generateToken(res, user._id, user.employee);
+		res.status(201).json({
 			_id: user._id,
 			username: user.username,
 			email: user.email,
-			token: generateToken(updatedUser._id, user.employee),
 		});
 	} else {
 		res.status(400);
@@ -55,6 +53,8 @@ export const addUser = expressAsyncHandler(async (req, res, next) => {
 });
 
 //login User
+// POST  api/users/register
+// access public
 export const loginUser = expressAsyncHandler(async (req, res) => {
 	//destructuring the body
 	const { email, password } = req.body;
@@ -69,11 +69,11 @@ export const loginUser = expressAsyncHandler(async (req, res) => {
 
 	//checking if the entered parameters are correct
 	if (user && (await bcrypt.compare(password, user.password))) {
+		generateToken(res, user._id, user.employee);
 		res.status(200).json({
 			_id: user.id,
 			username: user.username,
 			email: user.email,
-			token: generateToken(user._id, user.employee),
 		});
 	} else {
 		res.status(400);
@@ -81,19 +81,27 @@ export const loginUser = expressAsyncHandler(async (req, res) => {
 	}
 });
 
+//logout user
+//Post api/users/logout
+//access private
+export const logoutUser = expressAsyncHandler(async (req, res) => {
+	res.cookie('jwt', '', {
+		httpOnly: true,
+		expires: new Date(0),
+	});
+	res.status(200).json({ message: 'Logged out' });
+});
+
 //show the user details
+// Get  api/users/me
+// access private
 export const showUser = expressAsyncHandler(async (req, res) => {
 	res.status(200).json(req.user);
 });
 
 //show the user details
+// Get  api/users/admin
+// access admin
 export const showAdmin = expressAsyncHandler(async (req, res) => {
 	res.status(200).json(req.user);
 });
-
-//Token Generator
-const generateToken = (id, isEmployee) => {
-	return jwt.sign({ id, isEmployee }, process.env.JWT_SECRET, {
-		expiresIn: '15d',
-	});
-};

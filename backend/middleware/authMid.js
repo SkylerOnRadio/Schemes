@@ -6,30 +6,19 @@ export const protect = expressAsyncHandler(async (req, res, next) => {
 	//declaring the token variable
 	let token;
 
-	//checking if the page has a bearer token
-	if (
-		req.headers.authorization &&
-		req.headers.authorization.startsWith('Bearer')
-	) {
+	//getting the cookie
+	token = req.cookies.jwt;
+
+	if (token) {
 		try {
-			{
-				//get the token
-				token = req.headers.authorization.split(' ')[1];
-
-				//verify the token
-				const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-				//Get user from the token
-				req.user = await User.findById(decoded.id).select('-password');
-				next();
-			}
+			const decoded = jwt.verify(token, process.env.JWT_SECRET);
+			req.user = await User.findById(decoded.user_id).select('-password');
+			return next();
 		} catch (error) {
-			res.status(401);
-			return next(new Error(error));
+			res.status(403);
+			return next('Not Authorized, invalid token');
 		}
-	}
-
-	if (!token) {
+	} else {
 		res.status(401);
 		return next('No token provided');
 	}
