@@ -55,7 +55,7 @@ export const addUser = expressAsyncHandler(async (req, res, next) => {
 //login User
 // POST  api/users/register
 // access public
-export const loginUser = expressAsyncHandler(async (req, res) => {
+export const loginUser = expressAsyncHandler(async (req, res, next) => {
 	//destructuring the body
 	const { email, password } = req.body;
 
@@ -67,8 +67,13 @@ export const loginUser = expressAsyncHandler(async (req, res) => {
 	//finding the user through email
 	const user = await User.findOne({ email });
 
+	if (!user) {
+		res.status(404);
+		return next(new Error('User does not exist'));
+	}
+
 	//checking if the entered parameters are correct
-	if (user && (await bcrypt.compare(password, user.password))) {
+	if (await bcrypt.compare(password, user.password)) {
 		generateToken(res, user._id, user.employee);
 		res.status(200).json({
 			_id: user.id,
@@ -77,7 +82,7 @@ export const loginUser = expressAsyncHandler(async (req, res) => {
 		});
 	} else {
 		res.status(400);
-		return next(new Error('Invalid data entered'));
+		return next(new Error('Wrong Password'));
 	}
 });
 
@@ -96,12 +101,45 @@ export const logoutUser = expressAsyncHandler(async (req, res) => {
 // Get  api/users/me
 // access private
 export const showUser = expressAsyncHandler(async (req, res) => {
-	res.status(200).json(req.user);
+	res.status(200).json({
+		_id: req.user._id,
+		username: req.user.username,
+		email: req.user.email,
+	});
 });
 
 //show the user details
 // Get  api/users/admin
 // access admin
 export const showAdmin = expressAsyncHandler(async (req, res) => {
-	res.status(200).json(req.user);
+	res.status(200).json({
+		_id: req.user._id,
+		username: req.user.username,
+		email: req.user.email,
+	});
+});
+
+//update user
+//put api/users/me
+//access private
+export const updateUser = expressAsyncHandler(async (req, res) => {
+	const user = await User.findById(req.user._id);
+	if (!user) {
+		res.status(404);
+		return next(new Error('User not found.'));
+	}
+	user.username = req.body.username || user.username;
+	user.email = req.body.email || user.body.email;
+	if (req.body.password) {
+		//Hashing the password
+		const salt = await bcrypt.genSalt(10);
+		const hashedPassword = await bcrypt.hash(req.body.password, salt);
+		user.password = hashedPassword;
+	}
+	const updatedUser = await user.save();
+	res.status(200).json({
+		_id: updatedUser._id,
+		username: updatedUser.username,
+		email: updatedUser.email,
+	});
 });
