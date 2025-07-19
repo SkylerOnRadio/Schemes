@@ -10,6 +10,7 @@ const userSchema = mongoose.Schema(
 		},
 		password: { type: String, required: [true, 'Please add password.'] },
 		employee: { type: Boolean, required: false, default: false },
+		hasDetails: { type: Boolean, required: false, default: false },
 	},
 	{ timestamps: true }
 );
