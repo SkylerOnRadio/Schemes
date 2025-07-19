@@ -17,7 +17,7 @@ export const getScheme = expressAsyncHandler(async (req, res, next) => {
 	const id = req.params.id;
 	const scheme = await Scheme.findById(id);
 	if (scheme) {
-		res.status(200).json(scheme);
+		return res.status(200).json(scheme);
 	}
 	return next(new Error('No such scheme exists.'));
 });
