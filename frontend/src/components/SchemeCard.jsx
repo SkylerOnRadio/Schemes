@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 const SchemeCard = ({ scheme }) => {
-	let description = scheme.longDescription;
+	let description = scheme.summary;
 	description = description.substring(0, 250) + '...';
 
 	const navigate = useNavigate();

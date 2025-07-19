@@ -8,6 +8,12 @@ const getSchemes = async () => {
 	return res.data;
 };
 
-const schemeService = { getSchemes };
+//get specific scheme
+const getScheme = async (id) => {
+	const res = await axios.get(API_URL + `${id}`);
+	return res.data;
+};
+
+const schemeService = { getSchemes, getScheme };
 
 export default schemeService;

@@ -27,34 +27,37 @@ const SchemePage = () => {
 	if (!scheme) return <p>Scheme not found</p>;
 
 	return (
-		<div className="ml-3 mt-5 bg-white rounded-2xl mr-3">
-			<h1 className=" text-5xl text-teal-900 font-semibold ml-2">
-				{scheme.title}
-			</h1>
-			<h2 className="ml-10 text-3xl mt-1.5 font-semibold text-teal-800">
-				Summary
-			</h2>
-			<p className="ml-14 text-xl mt-2">{scheme.summary}</p>
-			<h2 className="ml-10 text-3xl mt-1.5 font-semibold text-teal-800">
-				Benefits
-			</h2>
-			<p className="ml-14 text-xl mt-2">
-				{scheme.benefits.map((item, i) => (
-					<li key={i}>{item}</li>
-				))}
-			</p>
-			<h2 className="ml-10 text-3xl mt-1.5 font-semibold text-teal-800">
-				Summary
-			</h2>
-			<p className="ml-14 text-xl mt-2">{scheme.longDescription}</p>
-			<h2 className="ml-10 text-3xl mt-1.5 font-semibold text-teal-800">
-				Summary
-			</h2>
-			<p className="ml-14 text-xl mt-2">{scheme.longDescription}</p>
-			<h2 className="ml-10 text-3xl mt-1.5 font-semibold text-teal-800">
-				Summary
-			</h2>
-			<p className="ml-14 text-xl mt-2">{scheme.longDescription}</p>
+		<div className="flex">
+			<div className=" ml-9 mt-7 bg-white rounded-2xl mr-9 w-250 pb-6 border">
+				<h1 className=" text-5xl text-teal-900 font-semibold ml-4 mb-9 pt-7">
+					{scheme.title}
+					<p className="ml-9 text-3xl">By: {scheme.agency}</p>
+				</h1>
+
+				<div className="ml-20 mr-3 text-3xl mt-1.5 font-semibold text-teal-800">
+					<h2>Summary</h2>
+					<p className="ml-14 text-xl mt-2 text-black">{scheme.summary}</p>
+					<h2>Objectives</h2>
+					<p className="ml-20 text-xl mt-2 text-black">
+						{scheme.objectives.map((item, i) => (
+							<li key={i}>{item}</li>
+						))}
+					</p>
+					<h2>Benefits</h2>
+					<p className="ml-20 text-xl mt-2 text-black">
+						{scheme.benefits.map((item, i) => (
+							<li key={i}>{item}</li>
+						))}
+					</p>
+					<h2>Eligibility</h2>
+					<p className="ml-20 text-xl mt-2 text-black">
+						{scheme.eligibility.map((item, i) => (
+							<li key={i}>{item}</li>
+						))}
+					</p>
+				</div>
+			</div>
+			<div className="bg-white border w-95 mt-7 rounded-2xl">hello</div>
 		</div>
 	);
 };
