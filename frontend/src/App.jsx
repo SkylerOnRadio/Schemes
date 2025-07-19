@@ -6,14 +6,14 @@ import {
 } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
 import HomePage from './pages/HomePage';
-import SchemePage from './pages/SchemePage';
+import SchemesPage from './pages/SchemesPage';
 
 function App() {
 	const router = createBrowserRouter(
 		createRoutesFromElements(
 			<Route path="/" element={<MainLayout />}>
 				<Route index element={<HomePage />} />
-				<Route path="/schemes" element={<SchemePage />} />
+				<Route path="/schemes" element={<SchemesPage />} />
 			</Route>
 		)
 	);
