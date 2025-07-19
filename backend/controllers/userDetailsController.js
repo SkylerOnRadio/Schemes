@@ -9,7 +9,7 @@ export const getUserDetails = expressAsyncHandler(async (req, res, next) => {
 	res.status(200).json(details);
 });
 
-//To show user details
+//To add user details
 //Get api/user/details
 //private user access
 export const addUserDetails = async (req, res, next) => {
@@ -27,7 +27,9 @@ export const addUserDetails = async (req, res, next) => {
 		student,
 	} = req.body;
 
-	if (await userDetail.find({ user: req.user._id })) {
+	const existingDetails = await userDetail.findOne({ user: req.user._id });
+
+	if (existingDetails) {
 		res.status(400);
 		return next(new Error('Details already exists'));
 	}
@@ -63,6 +65,7 @@ export const addUserDetails = async (req, res, next) => {
 		below_poverty,
 		student,
 	});
+	req.user.hasDetails = true;
 	res.status(200).json(details);
 };
 
