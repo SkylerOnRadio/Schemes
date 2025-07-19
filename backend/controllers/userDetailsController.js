@@ -1,5 +1,6 @@
 import expressAsyncHandler from 'express-async-handler';
 import { userDetail } from '../model/userDetailsModel.js';
+import { User } from '../model/userModel.js';
 
 //To show user details
 //Get api/user/details
@@ -27,9 +28,9 @@ export const addUserDetails = async (req, res, next) => {
 		student,
 	} = req.body;
 
-	const existingDetails = await userDetail.findOne({ user: req.user._id });
+	const user = await User.findOne({ _id: req.user._id });
 
-	if (existingDetails) {
+	if (user.hasDetails) {
 		res.status(400);
 		return next(new Error('Details already exists'));
 	}
@@ -65,7 +66,8 @@ export const addUserDetails = async (req, res, next) => {
 		below_poverty,
 		student,
 	});
-	req.user.hasDetails = true;
+	user.hasDetails = true;
+	await user.save();
 	res.status(200).json(details);
 };
 
