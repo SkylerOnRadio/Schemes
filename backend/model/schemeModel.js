@@ -7,32 +7,29 @@ const schemeSchema = mongoose.Schema(
 			required: [true, 'Please set the title'],
 			maxlength: 50,
 		},
-		shortDescription: {
-			type: String,
-			required: [true, 'Please set the short description'],
-			maxlength: 150,
-		},
 		benefits: {
-			type: String,
+			type: [String],
 			required: [true, 'Please set the benefits'],
 			maxlength: 250,
+			default: [],
 		},
 		objectives: {
-			type: String,
+			type: [String],
 			required: [true, 'Please set the objectives'],
 			maxlength: 250,
+			default: [],
 		},
 		eligibility: {
-			type: String,
-			required: [true, 'Please set the eligibility criteria'],
+			type: [String],
 			maxlength: 250,
+			default: [],
 		},
 		agency: {
 			type: String,
 			required: [true, 'Please set the agency overseeing the scheme'],
 			maxlength: 250,
 		},
-		longDescription: {
+		summary: {
 			type: String,
 			required: [true, 'Please set the long description'],
 			maxlength: 550,
