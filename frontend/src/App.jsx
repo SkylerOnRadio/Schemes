@@ -8,6 +8,8 @@ import MainLayout from './layouts/MainLayout';
 import HomePage from './pages/HomePage';
 import SchemesPage from './pages/SchemesPage';
 import SchemePage from './pages/SchemePage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 
 function App() {
 	const router = createBrowserRouter(
@@ -16,6 +18,8 @@ function App() {
 				<Route index element={<HomePage />} />
 				<Route path="/schemes/:id" element={<SchemePage />} />
 				<Route path="/schemes" element={<SchemesPage />} />
+				<Route path="/register" element={<RegisterPage />} />
+				<Route path="/login" element={<LoginPage />} />
 			</Route>
 		)
 	);
