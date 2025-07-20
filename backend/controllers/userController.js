@@ -42,9 +42,10 @@ export const addUser = expressAsyncHandler(async (req, res, next) => {
 
 		generateToken(res, user._id, user.employee);
 		res.status(201).json({
-			_id: user._id,
 			username: user.username,
 			email: user.email,
+			employee: user.employee,
+			hasDetails: user.hasDetails,
 		});
 	} else {
 		res.status(400);
@@ -76,9 +77,10 @@ export const loginUser = expressAsyncHandler(async (req, res, next) => {
 	if (await bcrypt.compare(password, user.password)) {
 		generateToken(res, user._id, user.employee);
 		res.status(200).json({
-			_id: user.id,
 			username: user.username,
 			email: user.email,
+			employee: user.employee,
+			hasDetails: user.hasDetails,
 		});
 	} else {
 		res.status(400);
