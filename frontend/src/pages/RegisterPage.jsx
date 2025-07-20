@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { login, reset } from '../features/auth/authSlice';
+import { register, reset } from '../features/auth/authSlice';
 import { toast } from 'react-toastify';
 
-const LoginPage = () => {
+const RegisterPage = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
@@ -13,6 +13,7 @@ const LoginPage = () => {
 	);
 
 	const [formData, setFormData] = useState({
+		username: '',
 		email: '',
 		password: '',
 	});
@@ -23,7 +24,7 @@ const LoginPage = () => {
 		dispatch(reset());
 	}, [isError, isSuccess, useDispatch, message, dispatch, navigate]);
 
-	const { email, password } = formData;
+	const { username, email, password } = formData;
 
 	const onChange = (e) => {
 		setFormData((prevState) => ({
@@ -34,8 +35,8 @@ const LoginPage = () => {
 
 	const onSubmit = (e) => {
 		e.preventDefault();
-		const userData = { email, password };
-		dispatch(login(userData));
+		const userData = { username, email, password };
+		dispatch(register(userData));
 	};
 
 	return (
@@ -46,6 +47,15 @@ const LoginPage = () => {
 						<h2 className="text-center text-4xl font-semibold text-white mb-7 mt-3">
 							Login
 						</h2>
+
+						<label className="ml-10 block text-xl mb-1.5">Username:</label>
+						<input
+							type="text"
+							className="ml-10 bg-white rounded  w-80 mb-4 h-9 shadow"
+							name="username"
+							value={username}
+							onChange={onChange}
+						/>
 
 						<label className="ml-10 block text-xl mb-1.5">Email:</label>
 						<input
@@ -69,7 +79,7 @@ const LoginPage = () => {
 								type="submit"
 								className="bg-emerald-700 text-xl font-semibold mb-5  w-30 h-10 rounded mt-5 hover:bg-emerald-800  "
 							>
-								Login
+								Register
 							</button>
 						</div>
 					</form>
@@ -79,4 +89,4 @@ const LoginPage = () => {
 	);
 };
 
-export default LoginPage;
+export default RegisterPage;

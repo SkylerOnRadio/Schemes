@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { reset, getSchemes } from '../features/schemes/schemesSlice';
 import SchemeCard from './SchemeCard';
 
@@ -25,7 +25,7 @@ const SchemesList = () => {
 			<h1 className="text-3xl   text-amber-700 mb-4">Schemes: </h1>
 			<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 ml-7">
 				{schemes.map((scheme) => (
-					<SchemeCard key={scheme.id} scheme={scheme} />
+					<SchemeCard key={scheme._id} scheme={scheme} />
 				))}
 			</div>
 		</>

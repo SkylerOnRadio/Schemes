@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaLandmark, FaComment, FaTimes, FaBars } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
 
 const Navbar = () => {
+	const dispatch = useDispatch();
+
 	const [menuOpen, setMenuOpen] = useState(false);
 
 	const toggleMenu = () => {

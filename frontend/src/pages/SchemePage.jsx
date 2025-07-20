@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getScheme, reset } from '../features/schemes/schemesSlice';
 import { useParams } from 'react-router-dom';
+import { logout } from '../features/auth/authSlice';
 
 const SchemePage = () => {
 	const dispatch = useDispatch();
