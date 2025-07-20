@@ -53,5 +53,9 @@ export const authSlice = createSlice({
 	},
 });
 
+export const logout = () => {
+	authService.logout();
+};
+
 export const { reset } = authSlice.actions;
 export default authSlice.reducer;
