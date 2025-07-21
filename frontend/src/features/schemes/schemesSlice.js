@@ -56,7 +56,14 @@ export const getScheme = createAsyncThunk(
 export const schemeSlice = createSlice({
 	name: 'scheme',
 	initialState,
-	reducers: { reset: (state) => initialState },
+	reducers: {
+		reset: (state) => {
+			state.isError = false;
+			state.isSuccess = false;
+			state.isLoading = false;
+			state.message = '';
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(getSchemes.pending, (state) => {
