@@ -13,7 +13,7 @@ import Carousel from '../components/Carousel';
 const HomePage = () => {
 	return (
 		<>
-			<div className="bg-white rounded-2xl shadow-[0 4px 12px] m-10 p-8 hover:scale-[1.01]">
+			<div className="relative bg-white rounded-2xl shadow-[0 4px 12px] m-10 p-8 hover:scale-[1.01]">
 				<h1
 					className="text-2xl text-amber-800 leading-2 text-justify"
 					id="vision"
