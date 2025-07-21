@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { reset, getSchemes } from '../features/schemes/schemesSlice';
 import SchemeCard from './SchemeCard';
+import LoadingBar from './LoadingBar';
 
 const SchemesList = () => {
 	const dispatch = useDispatch();
@@ -19,6 +20,8 @@ const SchemesList = () => {
 			dispatch(reset());
 		};
 	}, [dispatch, isError, message]);
+
+	if (isLoading) return <LoadingBar />;
 
 	return (
 		<>

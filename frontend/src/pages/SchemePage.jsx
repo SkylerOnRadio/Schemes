@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getScheme, reset } from '../features/schemes/schemesSlice';
 import { useParams } from 'react-router-dom';
 import { logout } from '../features/auth/authSlice';
+import LoadingBar from '../components/LoadingBar';
 
 const SchemePage = () => {
 	const dispatch = useDispatch();
@@ -23,7 +24,7 @@ const SchemePage = () => {
 		};
 	}, [dispatch, isError, message]);
 
-	if (isLoading) return <p>Loading...</p>;
+	if (isLoading) return <LoadingBar />;
 	if (isError) return <p>{message}</p>;
 	if (!scheme) return <p>Scheme not found</p>;
 
