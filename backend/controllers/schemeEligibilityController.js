@@ -22,7 +22,7 @@ export const addEligibility = expressAsyncHandler(async (req, res, next) => {
 	//checks if the scheme exist
 	if (await Scheme.findById(scheme_id)) {
 		//checks if the eligibility already exists
-		if (await Eligibility.find({ scheme: scheme_id })) {
+		if (await Eligibility.findOne({ scheme: scheme_id })) {
 			res.status(400);
 			return next(new Error('Eligibility criteria already exists.'));
 		}
