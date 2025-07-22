@@ -81,7 +81,7 @@ const Navbar = () => {
 										{user.username}
 									</h2>
 									<Link
-										to="/details"
+										to="/user"
 										className="mb-2 hover:text-neutral-300 block"
 									>
 										Details

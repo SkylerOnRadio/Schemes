@@ -13,6 +13,7 @@ import RegisterPage from './pages/RegisterPage';
 import NotFound from './pages/NotFound';
 import DetailsPage from './pages/DetailsPage';
 import AddDetailsPage from './pages/AddDetailsPage';
+import EditDetailsPage from './pages/EditDetailsPage';
 
 function App() {
 	const router = createBrowserRouter(
@@ -25,6 +26,7 @@ function App() {
 				<Route path="/login" element={<LoginPage />} />
 				<Route path="/user" element={<DetailsPage />} />
 				<Route path="/add-details" element={<AddDetailsPage />} />
+				<Route path="/edit-details" element={<EditDetailsPage />} />
 				<Route path="*" element={<NotFound />} />
 			</Route>
 		)
