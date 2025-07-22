@@ -73,15 +73,17 @@ const Details = () => {
 				</>
 			) : (
 				<>
-					<p className="text-center text-gray-700">
-						<strong>You must add your details first.</strong>
+					<div className="text-center text-gray-700">
+						<strong className="block mb-4">
+							You must add your details first.
+						</strong>
 						<Link
 							to="/add-details"
-							className="bg-blue-600 text-white text-center py-2 px-4 rounded w-25 text-xl hover:bg-blue-700"
+							className="inline-block bg-blue-600 text-white py-2 px-6 rounded text-xl hover:bg-blue-700"
 						>
 							Add
 						</Link>
-					</p>
+					</div>
 				</>
 			)}
 		</>
