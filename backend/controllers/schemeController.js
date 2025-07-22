@@ -29,23 +29,22 @@ export const addScheme = expressAsyncHandler(async (req, res, next) => {
 	//deconstructing the fields from the body
 	const {
 		title,
-		shortDescription,
 		benefits,
 		objectives,
 		eligibility,
 		agency,
-		longDescription,
+		summary,
+		application,
 	} = req.body;
 
 	//checks if all the fields are entered
 	if (
 		!title ||
-		!shortDescription ||
 		!benefits ||
 		!objectives ||
-		!eligibility ||
 		!agency ||
-		!longDescription
+		!summary ||
+		!application
 	) {
 		res.status(400);
 		return next(new Error('Please fill all the fields.'));
@@ -54,12 +53,12 @@ export const addScheme = expressAsyncHandler(async (req, res, next) => {
 	//create scheme
 	const scheme = await Scheme.create({
 		title,
-		shortDescription,
 		benefits,
 		objectives,
 		eligibility,
 		agency,
-		longDescription,
+		summary,
+		application,
 	});
 	res.status(200).json({ scheme });
 });
@@ -74,12 +73,12 @@ export const updateScheme = expressAsyncHandler(async (req, res, next) => {
 	//destructuring the data from the body
 	const {
 		title,
-		shortDescription,
 		benefits,
 		objectives,
 		eligibility,
 		agency,
-		longDescription,
+		summary,
+		application,
 	} = req.body;
 
 	//find the scheme
@@ -91,12 +90,12 @@ export const updateScheme = expressAsyncHandler(async (req, res, next) => {
 			id,
 			{
 				title,
-				shortDescription,
 				benefits,
 				objectives,
 				eligibility,
 				agency,
-				longDescription,
+				summary,
+				application,
 			},
 			{ new: true }
 		);

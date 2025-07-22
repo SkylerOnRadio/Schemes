@@ -34,6 +34,10 @@ const schemeSchema = mongoose.Schema(
 			required: [true, 'Please set the long description'],
 			maxlength: 550,
 		},
+		application: {
+			type: String,
+			required: [true, 'Please add the application process'],
+		},
 	},
 	{ timestamps: true }
 );
