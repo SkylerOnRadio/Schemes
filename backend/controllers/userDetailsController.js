@@ -41,12 +41,12 @@ export const addUserDetails = async (req, res, next) => {
 		!age ||
 		!income ||
 		!caste ||
-		!disability ||
+		disability === null ||
 		!marital_status ||
-		!minority ||
+		minority === null ||
 		!locality ||
-		!below_poverty ||
-		!student
+		below_poverty === null ||
+		!student === null
 	) {
 		res.status(400);
 		return next(new Error('PLease fill all the fields.'));
