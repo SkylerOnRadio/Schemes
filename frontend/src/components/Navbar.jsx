@@ -68,7 +68,7 @@ const Navbar = () => {
 					className="absolute top-1/2 right-15 -translate-y-1/2"
 				>
 					<img
-						src="/images/user.jpg"
+						src="/images/user.png"
 						alt="user"
 						className="size-14 rounded-full border cursor-pointer"
 						onClick={toggleUserMenu}
@@ -80,10 +80,15 @@ const Navbar = () => {
 									<h2 className="mb-2 font-semibold border-b border-gray-700">
 										{user.username}
 									</h2>
-									<h2 className="mb-2 hover:text-neutral-300">Details</h2>
+									<Link
+										to="/details"
+										className="mb-2 hover:text-neutral-300 block"
+									>
+										Details
+									</Link>
 									<button
 										onClick={logoutUser}
-										className="text-red-400 hover:text-red-600"
+										className="text-red-400 hover:text-red-600 "
 									>
 										Logout
 									</button>
