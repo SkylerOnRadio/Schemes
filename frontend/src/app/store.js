@@ -3,6 +3,7 @@ import schemeReducer from '../features/schemes/schemesSlice';
 import authReducer from '../features/auth/authSlice';
 import eligibilityReducer from '../features/eligibility/eligibilitySlice';
 import feedbackReducer from '../features/feedback/feedbackSlice';
+import detailsReducer from '../features/details/detailsSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
 		auth: authReducer,
 		eligibility: eligibilityReducer,
 		feedback: feedbackReducer,
+		details: detailsReducer,
 	},
 });

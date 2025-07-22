@@ -6,7 +6,7 @@ import { User } from '../model/userModel.js';
 //Get api/user/details
 //private user access
 export const getUserDetails = expressAsyncHandler(async (req, res, next) => {
-	const details = await userDetail.find({ user: req.user.id });
+	const details = await userDetail.findOne({ user: req.user.id });
 	res.status(200).json(details);
 });
 
