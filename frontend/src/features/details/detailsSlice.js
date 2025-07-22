@@ -56,6 +56,23 @@ export const postUserDetails = createAsyncThunk(
 	}
 );
 
+export const updateUserDetails = createAsyncThunk(
+	'/user/update',
+	async (userData, thunkAPI) => {
+		try {
+			return await detailsService.updateUserDetails(userData);
+		} catch (error) {
+			const message =
+				(error.response &&
+					error.response.data &&
+					error.response.data.message) ||
+				error.message ||
+				error.toString();
+			return thunkAPI.rejectWithValue(message);
+		}
+	}
+);
+
 const detailsSlice = createSlice({
 	name: 'details',
 	initialState,
@@ -93,6 +110,19 @@ const detailsSlice = createSlice({
 				state.details = action.payload;
 			})
 			.addCase(postUserDetails.rejected, (state, action) => {
+				state.isLoading = false;
+				state.isError = true;
+				state.message = action.payload;
+			})
+			.addCase(updateUserDetails.pending, (state) => {
+				state.isLoading = true;
+			})
+			.addCase(updateUserDetails.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.updatedDetails = true;
+				state.details = action.payload;
+			})
+			.addCase(updateUserDetails.rejected, (state, action) => {
 				state.isLoading = false;
 				state.isError = true;
 				state.message = action.payload;

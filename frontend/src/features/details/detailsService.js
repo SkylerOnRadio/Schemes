@@ -12,6 +12,11 @@ const postUserDetails = async (userData) => {
 	return res.data;
 };
 
-const detailsService = { getUserDetails, postUserDetails };
+const updateUserDetails = async (userData) => {
+	const res = await axios.put(API_URL, userData);
+	return res.data;
+};
+
+const detailsService = { getUserDetails, postUserDetails, updateUserDetails };
 
 export default detailsService;
