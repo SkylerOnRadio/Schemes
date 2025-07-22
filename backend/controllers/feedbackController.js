@@ -23,7 +23,7 @@ export const postSchemeFeedback = expressAsyncHandler(
 	async (req, res, next) => {
 		const scheme_id = req.params.id;
 
-		const { message } = req.body;
+		const { feedback } = req.body;
 
 		if (!mongoose.Types.ObjectId.isValid(scheme_id)) {
 			res.status(400);
@@ -36,16 +36,17 @@ export const postSchemeFeedback = expressAsyncHandler(
 			return next(new Error('Scheme does not exist.'));
 		}
 
-		if (!message) {
+		if (!feedback) {
 			res.status(400);
 			return next(new Error('Please enter a message.'));
 		}
 
-		const feedback = await Feedback.create({
-			message,
+		const userFeedback = await Feedback.create({
+			message: feedback,
+			username: req.user.username,
 			user: req.user._id,
 			scheme: scheme_id,
 		});
-		res.status(201).json(feedback);
+		res.status(201).json(userFeedback);
 	}
 );
