@@ -1,15 +1,15 @@
 import express from 'express';
-import { protect } from '../middleware/authMid';
+import { protect } from '../middleware/authMid.js';
 import {
 	getSchemeFeedback,
 	getUserFeedback,
 	postSchemeFeedback,
-} from '../controllers/feedbackController';
+} from '../controllers/feedbackController.js';
 
 const router = express.Router();
 
+router.get('/user', protect, getUserFeedback);
 router.get('/:id', getSchemeFeedback);
-router.get('/user/:id', protect, getUserFeedback);
 router.post('/:id', protect, postSchemeFeedback);
 
 export default router;
