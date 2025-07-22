@@ -10,6 +10,7 @@ import SchemesPage from './pages/SchemesPage';
 import SchemePage from './pages/SchemePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import NotFound from './pages/NotFound';
 
 function App() {
 	const router = createBrowserRouter(
@@ -20,6 +21,7 @@ function App() {
 				<Route path="/schemes" element={<SchemesPage />} />
 				<Route path="/register" element={<RegisterPage />} />
 				<Route path="/login" element={<LoginPage />} />
+				<Route path="*" element={<NotFound />} />
 			</Route>
 		)
 	);
