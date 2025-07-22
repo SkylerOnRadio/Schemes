@@ -17,6 +17,8 @@ const initialState = {
 	isSuccess: false,
 	isError: false,
 	isLoading: false,
+	addedDetails: false,
+	updatedDetails: false,
 	message: '',
 };
 
@@ -37,6 +39,23 @@ export const getUserDetails = createAsyncThunk(
 	}
 );
 
+export const postUserDetails = createAsyncThunk(
+	'/user/add',
+	async (userData, thunkAPI) => {
+		try {
+			return await detailsService.postUserDetails(userData);
+		} catch (error) {
+			const message =
+				(error.response &&
+					error.response.data &&
+					error.response.data.message) ||
+				error.message ||
+				error.toString();
+			return thunkAPI.rejectWithValue(message);
+		}
+	}
+);
+
 const detailsSlice = createSlice({
 	name: 'details',
 	initialState,
@@ -45,6 +64,8 @@ const detailsSlice = createSlice({
 			state.isSuccess = false;
 			state.isError = false;
 			state.isLoading = false;
+			state.addedDetails = false;
+			state.updatedDetails = false;
 			state.message = '';
 		},
 	},
@@ -59,6 +80,19 @@ const detailsSlice = createSlice({
 				state.details = action.payload;
 			})
 			.addCase(getUserDetails.rejected, (state, action) => {
+				state.isLoading = false;
+				state.isError = true;
+				state.message = action.payload;
+			})
+			.addCase(postUserDetails.pending, (state) => {
+				state.isLoading = true;
+			})
+			.addCase(postUserDetails.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.addedDetails = true;
+				state.details = action.payload;
+			})
+			.addCase(postUserDetails.rejected, (state, action) => {
 				state.isLoading = false;
 				state.isError = true;
 				state.message = action.payload;

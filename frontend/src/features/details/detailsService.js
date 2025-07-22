@@ -7,6 +7,11 @@ const getUserDetails = async () => {
 	return res.data;
 };
 
-const detailsService = { getUserDetails };
+const postUserDetails = async (userData) => {
+	const res = await axios.post(API_URL, userData);
+	return res.data;
+};
+
+const detailsService = { getUserDetails, postUserDetails };
 
 export default detailsService;
