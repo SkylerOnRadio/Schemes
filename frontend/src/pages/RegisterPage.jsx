@@ -20,7 +20,10 @@ const RegisterPage = () => {
 
 	useEffect(() => {
 		if (isError) toast.error(message);
-		if (isSuccess || user !== null) navigate('/');
+		if (isSuccess || user !== null) {
+			navigate('/');
+			toast.success('User registered!');
+		}
 		dispatch(reset());
 	}, [isError, isSuccess, useDispatch, message, dispatch, navigate]);
 
