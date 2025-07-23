@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { checkScheme, reset } from '../features/eligibility/eligibilitySlice';
 import LoadingBar from './LoadingBar';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
@@ -41,9 +41,12 @@ const Eligibility = () => {
 
 	if (isError) {
 		return (
-			<div className="bg-white text-2xl w-95 mt-7 rounded-2xl h-fit p-5 text-red-600">
-				{message}. Please leave a feedback notifying so.
-			</div>
+			<>
+				<div className="bg-white text-2xl w-95 mt-7 rounded-2xl h-fit p-5 text-red-600">
+					{message}. Please leave a feedback notifying so.
+				</div>
+				<>{user?.employee ? <Link>Add Details</Link> : <></>}</>
+			</>
 		);
 	}
 
