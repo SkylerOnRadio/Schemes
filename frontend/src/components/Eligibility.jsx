@@ -41,8 +41,8 @@ const Eligibility = () => {
 
 	if (isError) {
 		return (
-			<div className="bg-white border w-95 mt-7 rounded h-fit p-5 text-red-600">
-				{message}
+			<div className="bg-white text-2xl w-95 mt-7 rounded-2xl h-fit p-5 text-red-600">
+				{message}. Please leave a feedback notifying so.
 			</div>
 		);
 	}
