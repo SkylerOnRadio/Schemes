@@ -7,5 +7,10 @@ const checkScheme = async (schemeId) => {
 	return res.data;
 };
 
-const eligibilityService = { checkScheme };
+const addSchemeCriteria = async (schemeId, data) => {
+	const res = await axios.post(API_URL + `${schemeId}`, data);
+	return res.data;
+};
+
+const eligibilityService = { checkScheme, addSchemeCriteria };
 export default eligibilityService;
