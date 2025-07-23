@@ -17,6 +17,10 @@ const updateUserDetails = async (userData) => {
 	return res.data;
 };
 
-const detailsService = { getUserDetails, postUserDetails, updateUserDetails };
+const detailsService = {
+	getUserDetails,
+	postUserDetails,
+	updateUserDetails,
+};
 
 export default detailsService;
