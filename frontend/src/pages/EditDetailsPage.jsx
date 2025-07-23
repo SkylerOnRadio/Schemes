@@ -91,11 +91,6 @@ const EditDetailsPage = () => {
 		}
 	}, [isError, message, dispatch]);
 
-	const sendBack = () => {
-		toast.info('You already have your details filled.');
-		navigate('/user');
-	};
-
 	const hasDetails = () => {
 		if (!user.hasDetails) return true;
 		return false;
