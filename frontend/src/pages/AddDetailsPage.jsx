@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { postUserDetails, reset } from '../features/details/detailsSlice';
+import { fetchUser } from '../features/auth/authSlice';
+import { reset as resetUser } from '../features/auth/authSlice';
 
 const AddDetailsPage = () => {
 	const dispatch = useDispatch();
@@ -44,11 +46,13 @@ const AddDetailsPage = () => {
 		if (isError) toast.error(message);
 
 		if (addedDetails) {
+			dispatch(fetchUser());
+			dispatch(resetUser());
 			navigate('/user');
 			toast.success('Added Details!');
 		}
 		dispatch(reset());
-	}, [isError, addedDetails, message, dispatch, navigate]);
+	}, [isError, addedDetails, message, dispatch, navigate, user.hasDetails]);
 
 	const sendBack = () => {
 		toast.info('You already have your details filled.');
