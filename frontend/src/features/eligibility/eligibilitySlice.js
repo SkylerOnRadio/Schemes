@@ -4,7 +4,7 @@ import eligibilityService from './eligibilityService';
 const initialState = {
 	eligibility: null,
 	schemeEligibility: null,
-	schemes: null,
+	schemes: { result: [] },
 	addedDetails: false,
 	isSuccess: false,
 	isError: false,
