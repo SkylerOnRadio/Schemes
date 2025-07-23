@@ -4,6 +4,7 @@ import schemeService from './schemesService';
 const initialState = {
 	schemes: [],
 	scheme: {
+		_id: '',
 		title: '',
 		benefits: [],
 		objectives: [],
@@ -11,9 +12,10 @@ const initialState = {
 		agency: '',
 		summary: '',
 	},
+	addedScheme: false,
+	schemeError: false,
 	isError: false,
-	isSuccess: false,
-	isLoading: false,
+	addedScheme: false,
 	message: '',
 };
 
@@ -53,6 +55,23 @@ export const getScheme = createAsyncThunk(
 	}
 );
 
+export const addScheme = createAsyncThunk(
+	'scheme/add',
+	async (data, thunkAPI) => {
+		try {
+			return await schemeService.addScheme(data);
+		} catch (error) {
+			const message =
+				(error.response &&
+					error.response.data &&
+					error.response.data.message) ||
+				error.message ||
+				error.toString();
+			return thunkAPI.rejectWithValue(message);
+		}
+	}
+);
+
 export const schemeSlice = createSlice({
 	name: 'scheme',
 	initialState,
@@ -61,6 +80,7 @@ export const schemeSlice = createSlice({
 			state.isError = false;
 			state.isSuccess = false;
 			state.isLoading = false;
+			state.addedScheme = false;
 			state.message = '';
 		},
 	},
@@ -88,6 +108,19 @@ export const schemeSlice = createSlice({
 				state.scheme = action.payload;
 			})
 			.addCase(getScheme.rejected, (state, action) => {
+				state.isLoading = false;
+				state.isError = true;
+				state.message = action.payload;
+			})
+			.addCase(addScheme.pending, (state) => {
+				state.isLoading = true;
+			})
+			.addCase(addScheme.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.addedScheme = true;
+				state.scheme = action.payload;
+			})
+			.addCase(addScheme.rejected, (state, action) => {
 				state.isLoading = false;
 				state.isError = true;
 				state.message = action.payload;

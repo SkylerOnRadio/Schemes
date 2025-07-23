@@ -14,6 +14,11 @@ const getScheme = async (id) => {
 	return res.data;
 };
 
-const schemeService = { getSchemes, getScheme };
+const addScheme = async (data) => {
+	const res = await axios.post(API_URL, data);
+	return res.data;
+};
+
+const schemeService = { getSchemes, getScheme, addScheme };
 
 export default schemeService;

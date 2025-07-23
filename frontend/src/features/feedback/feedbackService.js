@@ -12,6 +12,17 @@ const postSchemeFeedback = async (scheme_id, feedback) => {
 	return res.data;
 };
 
-const feedbackService = { getSchemeFeedbacks, postSchemeFeedback };
+const getUserFeedbacks = async () => {
+	const res = await axios(API_URL, { withCredentials: true });
+
+	console.log(res.data);
+	return res.data;
+};
+
+const feedbackService = {
+	getSchemeFeedbacks,
+	postSchemeFeedback,
+	getUserFeedbacks,
+};
 
 export default feedbackService;

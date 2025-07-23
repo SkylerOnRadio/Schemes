@@ -14,6 +14,10 @@ import NotFound from './pages/NotFound';
 import DetailsPage from './pages/DetailsPage';
 import AddDetailsPage from './pages/AddDetailsPage';
 import EditDetailsPage from './pages/EditDetailsPage';
+import AddSchemePage from './pages/AddSchemePage';
+import FeedbacksPage from './pages/FeedbacksPage';
+import AddSchemeEligibilityPage from './pages/AddSchemeEligibilityPage';
+import EligiblePage from './pages/EligiblePage';
 
 function App() {
 	const router = createBrowserRouter(
@@ -22,9 +26,16 @@ function App() {
 				<Route index element={<HomePage />} />
 				<Route path="/schemes/:id" element={<SchemePage />} />
 				<Route path="/schemes" element={<SchemesPage />} />
+				<Route path="/add-scheme" element={<AddSchemePage />} />
+				<Route
+					path="/add-scheme-details/:id"
+					element={<AddSchemeEligibilityPage />}
+				/>
+				<Route path="/eligibilities" element={<EligiblePage />} />
 				<Route path="/register" element={<RegisterPage />} />
 				<Route path="/login" element={<LoginPage />} />
 				<Route path="/user" element={<DetailsPage />} />
+				<Route path="/feedbacks" element={<FeedbacksPage />} />
 				<Route path="/add-details" element={<AddDetailsPage />} />
 				<Route path="/edit-details" element={<EditDetailsPage />} />
 				<Route path="*" element={<NotFound />} />
