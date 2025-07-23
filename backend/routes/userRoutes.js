@@ -6,12 +6,13 @@ import {
 	showAdmin,
 	logoutUser,
 	updateUser,
+	fetchUser,
 } from '../controllers/userController.js';
 import { protect } from '../middleware/authMid.js';
 import { isAdmin } from '../middleware/isEmployeeMid.js';
 
 const router = express.Router();
-
+router.get('/fetch', protect, fetchUser);
 router.post('/register', addUser);
 router.post('/login', loginUser);
 router.get('/me', protect, showUser);
