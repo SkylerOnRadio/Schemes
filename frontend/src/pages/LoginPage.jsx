@@ -19,7 +19,7 @@ const LoginPage = () => {
 
 	useEffect(() => {
 		if (isError) toast.error(message);
-		if (isSuccess || user !== null) {
+		if (isSuccess) {
 			navigate('/');
 			toast.success('Logged In');
 		}

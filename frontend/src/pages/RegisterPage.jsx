@@ -8,7 +8,7 @@ const RegisterPage = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
-	const { user, isError, isLoading, isSuccess, message } = useSelector(
+	const { user, isError, isSuccess, message } = useSelector(
 		(state) => state.auth
 	);
 
@@ -20,7 +20,7 @@ const RegisterPage = () => {
 
 	useEffect(() => {
 		if (isError) toast.error(message);
-		if (isSuccess || user !== null) {
+		if (isSuccess) {
 			navigate('/');
 			toast.success('User registered!');
 		}
