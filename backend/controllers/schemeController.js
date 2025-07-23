@@ -60,7 +60,7 @@ export const addScheme = expressAsyncHandler(async (req, res, next) => {
 		summary,
 		application,
 	});
-	res.status(200).json({ scheme });
+	res.status(200).json(scheme);
 });
 
 //Update scheme
