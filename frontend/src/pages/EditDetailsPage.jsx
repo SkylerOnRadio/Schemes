@@ -70,11 +70,18 @@ const EditDetailsPage = () => {
 	};
 
 	useEffect(() => {
-		if (user?.hasDetails === false) {
+		if (!user || user === null) {
+			toast.error('You are not logged in.');
+			navigate('/register');
+		}
+	}, [user, navigate]);
+
+	useEffect(() => {
+		if (user !== null && user.hasDetails === false) {
 			toast.info('You need to add your details first!');
 			navigate('/add-details');
 		}
-	}, [user?.hasDetails, navigate]);
+	}, [user.hasDetails, navigate, user]);
 
 	useEffect(() => {
 		if (updatedDetails) {
