@@ -17,8 +17,6 @@ const initialState = {
 	isSuccess: false,
 	isError: false,
 	isLoading: false,
-	addedDetails: false,
-	updatedDetails: false,
 	message: '',
 };
 
@@ -81,8 +79,6 @@ const detailsSlice = createSlice({
 			state.isSuccess = false;
 			state.isError = false;
 			state.isLoading = false;
-			state.addedDetails = false;
-			state.updatedDetails = false;
 			state.message = '';
 		},
 	},
