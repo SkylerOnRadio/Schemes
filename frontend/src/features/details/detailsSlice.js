@@ -14,6 +14,7 @@ const initialState = {
 		below_poverty: false,
 		student: false,
 	},
+	updatedDetails: false,
 	isSuccess: false,
 	isError: false,
 	isLoading: false,
@@ -79,6 +80,7 @@ const detailsSlice = createSlice({
 			state.isSuccess = false;
 			state.isError = false;
 			state.isLoading = false;
+			state.updatedDetails = false;
 			state.message = '';
 		},
 	},
