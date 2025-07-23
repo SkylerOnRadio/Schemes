@@ -44,20 +44,20 @@ export const addEligibility = expressAsyncHandler(async (req, res, next) => {
 
 		//checks if all the parameters are filled
 		if (
-			!gender ||
-			!min_age ||
-			!max_age ||
-			!max_income ||
-			!caste ||
-			!disability ||
-			!marital_status ||
-			!minority ||
-			!locality ||
-			!below_poverty ||
-			!student
+			!gender &&
+			!min_age &&
+			!max_age &&
+			!max_income &&
+			!caste &&
+			disability !== undefined &&
+			!marital_status &&
+			minority !== undefined &&
+			!locality &&
+			below_poverty !== undefined &&
+			student !== undefined
 		) {
 			res.status(400);
-			return next(new Error('Please fill all the fields'));
+			return next(new Error('Please fill a field'));
 		}
 
 		const eligibility = await Eligibility.create({
