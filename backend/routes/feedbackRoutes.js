@@ -8,7 +8,7 @@ import {
 
 const router = express.Router();
 
-router.get('/user', protect, getUserFeedback);
+router.get('/', protect, getUserFeedback);
 router.get('/:id', getSchemeFeedback);
 router.post('/:id', protect, postSchemeFeedback);
 
