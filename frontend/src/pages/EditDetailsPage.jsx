@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {
 	getUserDetails,
-	postUserDetails,
 	reset,
 	updateUserDetails,
 } from '../features/details/detailsSlice';
@@ -71,14 +70,26 @@ const EditDetailsPage = () => {
 	};
 
 	useEffect(() => {
-		if (isError) toast.error(message);
-
-		if (updatedDetails) {
-			navigate('/user');
-			toast.success('Updated Details!');
+		if (user?.hasDetails === false) {
+			toast.info('You need to add your details first!');
+			navigate('/add-details');
 		}
-		dispatch(reset());
-	}, [isError, updatedDetails, message, dispatch, navigate]);
+	}, [user?.hasDetails, navigate]);
+
+	useEffect(() => {
+		if (updatedDetails) {
+			dispatch(reset());
+			toast.success('Updated Details!');
+			navigate('/user');
+		}
+	}, [updatedDetails, dispatch, navigate]);
+
+	useEffect(() => {
+		if (isError) {
+			toast.error(message);
+			dispatch(reset());
+		}
+	}, [isError, message, dispatch]);
 
 	const sendBack = () => {
 		toast.info('You already have your details filled.');
@@ -86,7 +97,7 @@ const EditDetailsPage = () => {
 	};
 
 	const hasDetails = () => {
-		if (user.hasDetails) sendBack();
+		if (!user.hasDetails) return true;
 		return false;
 	};
 
