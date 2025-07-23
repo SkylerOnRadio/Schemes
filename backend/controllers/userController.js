@@ -2,7 +2,19 @@ import expressAsyncHandler from 'express-async-handler';
 import bcrypt from 'bcryptjs';
 import { User } from '../model/userModel.js';
 import generateToken from '../utils/generateToken.js';
-import e from 'express';
+
+//fetches user data if they are already signed in
+//GET api/users/fetch
+export const fetchUser = expressAsyncHandler(async (req, res, next) => {
+	const user = await User.findById(req.user.id);
+	console.log(user);
+	res.status(200).json({
+		username: user.username,
+		email: user.email,
+		employee: user.employee,
+		hasDetails: user.hasDetails,
+	});
+});
 
 //adds user to the database
 // POST  api/users/register
