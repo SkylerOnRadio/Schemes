@@ -6,7 +6,6 @@ import {
 	updateScheme,
 	deleteScheme,
 } from '../controllers/schemeController.js';
-import { protect } from '../middleware/authMid.js';
 import { isAdmin } from '../middleware/isEmployeeMid.js';
 
 const router = express.Router();
