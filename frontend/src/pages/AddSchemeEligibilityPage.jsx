@@ -19,6 +19,17 @@ const AddDetailsPage = () => {
 
 	const { user } = useSelector((state) => state.auth);
 
+	useEffect(() => {
+		if (user?.employee)
+			return toast.info('Please fill in the inputs carefully.');
+		return async () => {
+			await toast.warn(
+				'You are not an admin. Please do not try to access such pages.'
+			);
+			navigate('/');
+		};
+	}, [user?.employee, navigate]);
+
 	const [formData, setFormData] = useState({
 		gender: '',
 		min_age: '',
