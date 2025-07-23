@@ -46,6 +46,23 @@ export const logout = createAsyncThunk('auth/logout', async () => {
 	await authService.logout();
 });
 
+export const fetchUser = createAsyncThunk(
+	'auth/fetch',
+	async (__dirname, thunkAPI) => {
+		try {
+			return await authService.fetchUser();
+		} catch (error) {
+			const message =
+				(error.response &&
+					error.response.data &&
+					error.response.data.message) ||
+				error.message ||
+				error.toString();
+			return thunkAPI.rejectWithValue(message);
+		}
+	}
+);
+
 export const authSlice = createSlice({
 	name: 'auth',
 	initialState,
@@ -88,6 +105,20 @@ export const authSlice = createSlice({
 				state.user = null;
 			})
 			.addCase(logout.fulfilled, (state) => {
+				state.user = null;
+			})
+			.addCase(fetchUser.pending, (state) => {
+				state.isLoading = true;
+			})
+			.addCase(fetchUser.fulfilled, (state, action) => {
+				state.isSuccess = true;
+				state.isLoading = false;
+				state.user = action.payload;
+			})
+			.addCase(fetchUser.rejected, (state, action) => {
+				state.isLoading = false;
+				state.isError = true;
+				state.message = action.payload;
 				state.user = null;
 			});
 	},

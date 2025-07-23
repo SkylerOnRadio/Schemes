@@ -8,7 +8,6 @@ const register = async (userData) => {
 	if (res.data) {
 		localStorage.setItem('user', JSON.stringify(res.data));
 	}
-	console.log('API response', res.data);
 	return res.data;
 };
 
@@ -18,7 +17,11 @@ const login = async (userData) => {
 	if (res.data) {
 		localStorage.setItem('user', JSON.stringify(res.data));
 	}
-	console.log('API response:', res.data);
+	return res.data;
+};
+
+const fetchUser = async () => {
+	const res = await axios.get(API_URL + 'fetch');
 	return res.data;
 };
 
@@ -26,6 +29,6 @@ const logout = () => {
 	localStorage.removeItem('user');
 };
 
-const authService = { register, login, logout };
+const authService = { register, login, logout, fetchUser };
 
 export default authService;
