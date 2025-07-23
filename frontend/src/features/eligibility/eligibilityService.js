@@ -12,5 +12,10 @@ const addSchemeCriteria = async (schemeId, data) => {
 	return res.data;
 };
 
-const eligibilityService = { checkScheme, addSchemeCriteria };
+const checkUser = async () => {
+	const res = await axios.get(API_URL + 'checkAll');
+	return res.data;
+};
+
+const eligibilityService = { checkScheme, addSchemeCriteria, checkUser };
 export default eligibilityService;

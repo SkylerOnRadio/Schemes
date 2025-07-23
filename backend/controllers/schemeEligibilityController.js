@@ -150,32 +150,35 @@ export const updateEligibility = expressAsyncHandler(async (req, res, next) => {
 	return next(new Error('Please fill at least one field'));
 });
 
-//to check the eligibility of the user for the specific scheme
-//get api/eligibility/check/:id
-//private access
+// Check the eligibility of the user for a specific scheme
+// GET api/eligibility/check/:id
+// Private access
 export const checkEligibility = expressAsyncHandler(async (req, res, next) => {
-	//getting the eligibility criteria and the user criteria
 	const eligibility = await Eligibility.findOne({ scheme: req.params.id });
 	const details = await userDetail.findOne({ user: req.user._id });
 
-	//checking if eligibility criteria exists
 	if (!eligibility) {
 		res.status(400);
 		return next(new Error('Eligibility criteria does not exist'));
 	}
 
-	//checks if the user has filled in their details
 	if (!details) {
 		res.status(400);
 		return next(new Error('You have not filled in the user details'));
 	}
 
-	//checking if the user is eligible or not
 	let failed = [];
 	let passed = [];
 
-	const check = (field, condition) => {
-		if (condition) {
+	const check = (field, condition, userValue) => {
+		// Skip check if userValue is undefined, null, or empty string
+		if (
+			userValue === undefined ||
+			userValue === null ||
+			(userValue === '' && typeof userValue === 'string')
+		) {
+			passed.push(field);
+		} else if (condition) {
 			passed.push(field);
 		} else {
 			failed.push(field);
@@ -184,40 +187,61 @@ export const checkEligibility = expressAsyncHandler(async (req, res, next) => {
 
 	// Perform checks
 	if (eligibility.gender !== undefined)
-		check('gender', eligibility.gender === details.gender);
+		check('gender', eligibility.gender === details.gender, details.gender);
 
 	if (eligibility.min_age !== undefined)
-		check('min_age', details.age >= eligibility.min_age);
+		check('min_age', details.age >= eligibility.min_age, details.age);
 
 	if (eligibility.max_age !== undefined)
-		check('max_age', details.age <= eligibility.max_age);
+		check('max_age', details.age <= eligibility.max_age, details.age);
 
 	if (eligibility.max_income !== undefined)
-		check('max_income', details.income <= eligibility.max_income);
+		check(
+			'max_income',
+			details.income <= eligibility.max_income,
+			details.income
+		);
 
 	if (eligibility.caste !== undefined)
-		check('caste', eligibility.caste === details.caste);
+		check('caste', eligibility.caste === details.caste, details.caste);
 
 	if (eligibility.disability !== undefined)
-		check('disability', eligibility.disability === details.disability);
+		check(
+			'disability',
+			eligibility.disability === details.disability,
+			details.disability
+		);
 
 	if (eligibility.marital_status !== undefined)
 		check(
 			'marital_status',
-			eligibility.marital_status === details.marital_status
+			eligibility.marital_status === details.marital_status,
+			details.marital_status
 		);
 
 	if (eligibility.minority !== undefined)
-		check('minority', eligibility.minority === details.minority);
+		check(
+			'minority',
+			eligibility.minority === details.minority,
+			details.minority
+		);
 
 	if (eligibility.locality !== undefined)
-		check('locality', eligibility.locality === details.locality);
+		check(
+			'locality',
+			eligibility.locality === details.locality,
+			details.locality
+		);
 
 	if (eligibility.below_poverty !== undefined)
-		check('below_poverty', eligibility.below_poverty === details.below_poverty);
+		check(
+			'below_poverty',
+			eligibility.below_poverty === details.below_poverty,
+			details.below_poverty
+		);
 
 	if (eligibility.student !== undefined)
-		check('student', eligibility.student === details.student);
+		check('student', eligibility.student === details.student, details.student);
 
 	if (failed.length > 0) {
 		return res.status(200).json({
@@ -227,7 +251,6 @@ export const checkEligibility = expressAsyncHandler(async (req, res, next) => {
 		});
 	}
 
-	// Optionally store eligibility status in req for next middleware
 	return res.status(200).json({
 		message: 'You are eligible.',
 		passed,
@@ -240,73 +263,64 @@ export const checkEligibility = expressAsyncHandler(async (req, res, next) => {
 //private access
 export const checkAllEligibility = expressAsyncHandler(
 	async (req, res, next) => {
-		//getting the user details
+		// Get user details
 		const details = await userDetail.findOne({ user: req.user._id });
 		const allEligibilities = await Eligibility.find().populate(
 			'scheme',
 			'title _id'
 		);
 
-		//checks if the user has filled in their details
+		// If user hasn't filled in details
 		if (!details) {
 			res.status(400);
 			return next(new Error('You have not filled in the user details'));
 		}
 
-		//checking if the user is eligible or not
+		// Evaluate eligibility
 		const result = [];
+
 		for (const eligibility of allEligibilities) {
 			const passed = [];
 			const failed = [];
-			const check = (field, condition) => {
-				if (condition) {
+
+			const check = (field, value, userValue) => {
+				// If value is undefined/null/empty string, skip check (pass automatically)
+				if (value === undefined || value === null || value === '') {
+					return;
+				}
+				if (userValue === undefined || userValue === null || userValue === '') {
+					failed.push(field); // If user's field is missing, fail
+					return;
+				}
+				if (
+					value === userValue ||
+					(field === 'min_age' && userValue >= value) ||
+					(field === 'max_age' && userValue <= value) ||
+					(field === 'max_income' && userValue <= value)
+				) {
 					passed.push(field);
 				} else {
 					failed.push(field);
 				}
 			};
 
-			// Perform checks
-			if (eligibility.gender !== undefined)
-				check('gender', eligibility.gender === details.gender);
+			check('gender', eligibility.gender, details.gender);
+			check('min_age', eligibility.min_age, details.age);
+			check('max_age', eligibility.max_age, details.age);
+			check('max_income', eligibility.max_income, details.income);
+			check('caste', eligibility.caste, details.caste);
+			check('disability', eligibility.disability, details.disability);
+			check(
+				'marital_status',
+				eligibility.marital_status,
+				details.marital_status
+			);
+			check('minority', eligibility.minority, details.minority);
+			check('locality', eligibility.locality, details.locality);
+			check('below_poverty', eligibility.below_poverty, details.below_poverty);
+			check('student', eligibility.student, details.student);
 
-			if (eligibility.min_age !== undefined)
-				check('min_age', details.age >= eligibility.min_age);
-
-			if (eligibility.max_age !== undefined)
-				check('max_age', details.age <= eligibility.max_age);
-
-			if (eligibility.max_income !== undefined)
-				check('max_income', details.income <= eligibility.max_income);
-
-			if (eligibility.caste !== undefined)
-				check('caste', eligibility.caste === details.caste);
-
-			if (eligibility.disability !== undefined)
-				check('disability', eligibility.disability === details.disability);
-
-			if (eligibility.marital_status !== undefined)
-				check(
-					'marital_status',
-					eligibility.marital_status === details.marital_status
-				);
-
-			if (eligibility.minority !== undefined)
-				check('minority', eligibility.minority === details.minority);
-
-			if (eligibility.locality !== undefined)
-				check('locality', eligibility.locality === details.locality);
-
-			if (eligibility.below_poverty !== undefined)
-				check(
-					'below_poverty',
-					eligibility.below_poverty === details.below_poverty
-				);
-
-			if (eligibility.student !== undefined)
-				check('student', eligibility.student === details.student);
-
-			if (!(failed.length > 0)) {
+			if (failed.length === 0) {
 				result.push({
 					scheme_id: eligibility.scheme._id,
 					scheme_name: eligibility.scheme.title,
@@ -314,9 +328,6 @@ export const checkAllEligibility = expressAsyncHandler(
 			}
 		}
 
-		// Optionally store eligibility status in req for next middleware
-		return res.status(200).json({
-			result,
-		});
+		return res.status(200).json({ result });
 	}
 );

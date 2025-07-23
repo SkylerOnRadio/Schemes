@@ -4,6 +4,7 @@ import eligibilityService from './eligibilityService';
 const initialState = {
 	eligibility: null,
 	schemeEligibility: null,
+	schemes: null,
 	addedDetails: false,
 	isSuccess: false,
 	isError: false,
@@ -32,8 +33,24 @@ export const addSchemeCriteria = createAsyncThunk(
 	'add/scheme/details',
 	async ({ schemeId, data }, thunkAPI) => {
 		try {
-			console.log(schemeId, data);
 			return await eligibilityService.addSchemeCriteria(schemeId, data);
+		} catch (error) {
+			const message =
+				(error.response &&
+					error.response.data &&
+					error.response.data.message) ||
+				error.message ||
+				error.toString();
+			return thunkAPI.rejectWithValue(message);
+		}
+	}
+);
+
+export const checkUser = createAsyncThunk(
+	'check/user',
+	async (__dirname, thunkAPI) => {
+		try {
+			return await eligibilityService.checkUser();
 		} catch (error) {
 			const message =
 				(error.response &&
@@ -82,6 +99,19 @@ export const eligibilitySlice = createSlice({
 				state.schemeEligibility = action.payload;
 			})
 			.addCase(addSchemeCriteria.rejected, (state, action) => {
+				state.isLoading = false;
+				state.isError = true;
+				state.message = action.payload;
+			})
+			.addCase(checkUser.pending, (state) => {
+				state.isLoading = true;
+			})
+			.addCase(checkUser.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.addedDetails = true;
+				state.schemes = action.payload;
+			})
+			.addCase(checkUser.rejected, (state, action) => {
 				state.isLoading = false;
 				state.isError = true;
 				state.message = action.payload;
